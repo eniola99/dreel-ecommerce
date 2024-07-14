@@ -13,10 +13,9 @@ import { Product } from '../../components';
 import { useStateContext } from '../../context/StateContext';
 
 const ProductDetails = ({ product, products }) => {
-  console.log({ product, products });
-  const { image, name, details, price, isAvailable } = product;
   const [index, setIndex] = useState(0);
   const { decQty, incQty, qty, onAdd, setShowCart } = useStateContext();
+  const { image, name, details, price, isAvailable } = product;
 
   const handleBuyNow = (isAvailable) => {
     if (!isAvailable) return;
@@ -43,16 +42,17 @@ const ProductDetails = ({ product, products }) => {
             />
           </div>
           <div className='small-images-container'>
-            {image?.map((item, i) => (
-              <img
-                key={i}
-                src={urlFor(item)}
-                className={
-                  i === index ? 'small-image selected-image' : 'small-image'
-                }
-                onMouseEnter={() => setIndex(i)}
-              />
-            ))}
+            {image &&
+              image?.map((item, i) => (
+                <img
+                  key={i}
+                  src={urlFor(item)}
+                  className={
+                    i === index ? 'small-image selected-image' : 'small-image'
+                  }
+                  onMouseEnter={() => setIndex(i)}
+                />
+              ))}
           </div>
         </div>
 
@@ -120,7 +120,7 @@ const ProductDetails = ({ product, products }) => {
 };
 
 export const getStaticPaths = async () => {
-  const query = `*[_type == "product"] {
+  const query = `*[_type == "accessories"] {
     slug {
       current
     }

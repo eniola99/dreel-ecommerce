@@ -6,7 +6,6 @@ import { urlFor, client } from '../../../lib/client';
 import { IoMdArrowRoundBack } from 'react-icons/io';
 
 const list = ({ accessoriesProducts }) => {
-  console.log({ accessoriesProducts });
   const router = useRouter();
   return (
     <>

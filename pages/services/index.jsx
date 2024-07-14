@@ -21,7 +21,6 @@ const index = ({ categories }) => {
       return toast.error('You need to login to proceed');
     }
   };
-  console.log({ categories, userAccount });
   return (
     <>
       <div className='products-heading'>
