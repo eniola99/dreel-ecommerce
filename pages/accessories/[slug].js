@@ -7,22 +7,19 @@ import {
 } from 'react-icons/ai';
 import { useRouter } from 'next/router';
 import { IoMdArrowRoundBack } from 'react-icons/io';
-import { toast } from 'react-hot-toast';
 
 import { client, urlFor } from '../../lib/client';
 import { Product } from '../../components';
 import { useStateContext } from '../../context/StateContext';
 
 const ProductDetails = ({ product, products }) => {
+  console.log({ product, products });
   const { image, name, details, price, isAvailable } = product;
   const [index, setIndex] = useState(0);
   const { decQty, incQty, qty, onAdd, setShowCart } = useStateContext();
 
   const handleBuyNow = (isAvailable) => {
-    if (!isAvailable) {
-      toast.error(`${name} is out of stock`);
-      return;
-    }
+    if (!isAvailable) return;
     onAdd(product, qty, isAvailable);
 
     setShowCart(true);
@@ -92,7 +89,7 @@ const ProductDetails = ({ product, products }) => {
             <button
               type='button'
               className='add-to-cart'
-              // disabled={!isAvailable}
+              disabled={!isAvailable}
               onClick={() => onAdd(product, qty, isAvailable)}
             >
               Add to Cart
@@ -146,8 +143,8 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async ({ params: { slug } }) => {
   if (slug === 'list') return;
-  const query = `*[_type == "product" && slug.current == '${slug}'][0]`;
-  const productsQuery = '*[_type == "product"]';
+  const query = `*[_type == "accessories" && slug.current == '${slug}'][0]`;
+  const productsQuery = '*[_type == "accessories"]';
 
   const product = await client.fetch(query);
   const products = await client.fetch(productsQuery);
