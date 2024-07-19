@@ -31,7 +31,7 @@ export default {
     {
       name: 'number',
       title: 'Number',
-      type: 'number',
+      type: 'string',
     },
     {
       name: 'currency',
@@ -42,6 +42,16 @@ export default {
       name: 'password',
       title: 'Password',
       type: 'string',
+    },
+    {
+      name: 'code',
+      title: 'Verification Code',
+      type: 'string',
+    },
+    {
+      name: 'verified',
+      title: 'isVerified',
+      type: 'boolean',
     },
   ],
 };

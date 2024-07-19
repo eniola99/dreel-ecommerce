@@ -2,10 +2,10 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { AiOutlineShopping } from 'react-icons/ai';
+import { MdOutlineAccountCircle } from 'react-icons/md';
 
 import { Cart } from './';
 import { useStateContext } from '../context/StateContext';
-import LoginModal from './LoginModal';
 
 const Navbar = () => {
   const router = useRouter();
@@ -57,7 +57,12 @@ const Navbar = () => {
           </button>
           <div className='navbar-account'>
             {!isLoggedin ? (
-              <LoginModal rerender={rerender} />
+              <Link href='/login'>
+                <div className='account'>
+                  <MdOutlineAccountCircle size={22} />
+                  <span>Login/Register</span>
+                </div>
+              </Link>
             ) : (
               <div className='dropdown'>
                 <button onClick={handleToggle} className='dropdown-toggle'>
@@ -66,7 +71,13 @@ const Navbar = () => {
                 {open && (
                   <ul className='dropdown-menu'>
                     <li>My Account</li>
-                    <Link href={'/account'} className='account-link'>
+                    <Link
+                      href={{
+                        pathname: '/account',
+                        query: { id: userAccount.user._id },
+                      }}
+                      className='account-link'
+                    >
                       <li onClick={handleClose}>Dashboard</li>
                     </Link>
                     <li className='logout' onClick={handleLogout}>

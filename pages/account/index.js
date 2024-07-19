@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { FaTelegramPlane } from 'react-icons/fa';
 import { FaWhatsapp } from 'react-icons/fa';
@@ -9,8 +9,15 @@ import { client } from '../../lib/client';
 import ImeiCHeck from '../../components/ImeiCHeck';
 import Announcement from '../../components/Announcement';
 
-const index = ({ announcement, categories }) => {
+const index = ({
+  announcement,
+  categories,
+  result,
+  pendingResult,
+  cancelledResult,
+}) => {
   const router = useRouter();
+
   return (
     <>
       <div className='products-heading'>
@@ -24,20 +31,22 @@ const index = ({ announcement, categories }) => {
         <div className='dashboard-column'>
           <div className='column-two'>
             <div className='column-two-card'>
-              <p>Completed Order:</p>
-              <span>8</span>
-            </div>
-            <div className='column-two-card'>
               <p>Completed IMEI Checks:</p>
-              <span>8</span>
-            </div>
-            <div className='column-two-card'>
-              <p>Pending Order:</p>
-              <span>8</span>
+              {Array.isArray(result) && (
+                <span>{result.length || 'No Transaction'}</span>
+              )}
             </div>
             <div className='column-two-card'>
               <p>Pending IMEI Checks:</p>
-              <span>2</span>
+              {Array.isArray(pendingResult) && (
+                <span>{pendingResult.length || 'No Transaction'}</span>
+              )}
+            </div>
+            <div className='column-two-card'>
+              <p>Cancelled IMEI CHECK:</p>
+              {Array.isArray(cancelledResult) && (
+                <span>{cancelledResult.length || 'No Transaction'}</span>
+              )}
             </div>
           </div>
           <ImeiCHeck categories={categories} />
@@ -64,15 +73,27 @@ const index = ({ announcement, categories }) => {
   );
 };
 
-export const getServerSideProps = async () => {
+export const getServerSideProps = async (router) => {
+  const userId = router.query.id;
+
+  const pending = false;
   const query = '*[_type == "announcement"]';
+  const completedImei = `*[_type == "unlockRequest" && userId == $userId && completed == true]`;
+  const pendingImei = `*[_type == "unlockRequest" && userId == $userId && completed == undefined]`;
+  const cancelledImei = `*[_type == "unlockRequest" && userId == $userId && completed == $pending]`;
+
+  const params = { userId, pending };
+  const pendingParams = { userId, pending };
   const announcement = await client.fetch(query);
+  const result = await client.fetch(completedImei, params);
+  const pendingResult = await client.fetch(pendingImei, pendingParams);
+  const cancelledResult = await client.fetch(cancelledImei, params);
 
   const categoryList = '*[_type == "categories"]';
   const categories = await client.fetch(categoryList);
 
   return {
-    props: { announcement, categories },
+    props: { announcement, categories, result, pendingResult, cancelledResult },
   };
 };
 

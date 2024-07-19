@@ -11,13 +11,13 @@ const Home = ({ products, bannerData, accessoriesProducts }) => {
       <div className=''>
         <div className='products-heading'>
           <h2>Best Seller Products</h2>
-          {/* <p>speaker There are many variations passages</p> */}
         </div>
 
         <div className='products-container'>
-          {products?.map((product) => (
-            <Product key={product._id} product={product} />
-          ))}
+          {products
+            .slice(-8)
+            .map((product) => <Product key={product._id} product={product} />)
+            .reverse()}
         </div>
       </div>
 
@@ -32,9 +32,10 @@ const Home = ({ products, bannerData, accessoriesProducts }) => {
         </div>
 
         <div className='products-container'>
-          {products?.map((product) => (
-            <Product key={product._id} product={product} />
-          ))}
+          {products
+            .slice(-8)
+            .map((product) => <Product key={product._id} product={product} />)
+            .reverse()}
         </div>
       </div>
 
@@ -49,9 +50,10 @@ const Home = ({ products, bannerData, accessoriesProducts }) => {
         </div>
 
         <div className='products-container'>
-          {accessoriesProducts?.map((product) => (
-            <Product key={product._id} product={product} />
-          ))}
+          {accessoriesProducts
+            .slice(-8)
+            .map((product) => <Product key={product._id} product={product} />)
+            .reverse()}
         </div>
       </div>
 

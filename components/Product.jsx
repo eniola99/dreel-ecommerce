@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 
 import { urlFor } from '../lib/client';
+import { truncate } from '../lib/utils';
 
 const Product = ({
   product: { image, name, slug, price, isAvailable, _type },
@@ -16,7 +17,7 @@ const Product = ({
             height={250}
             className='product-image'
           />
-          <p className='product-name'>{name}</p>
+          <p className='product-name'>{truncate(name)}</p>
           <p className='product-price'>${price}.99</p>
           {!isAvailable && <p className='product-available'>Out of Stock</p>}
         </div>

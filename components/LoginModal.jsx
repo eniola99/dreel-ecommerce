@@ -82,7 +82,7 @@ const LoginModal = ({ rerender }) => {
       });
       const data = await response.json();
       if (data.message) {
-        toast.error(data.message);
+        toast.success(data.message);
         setLoading(false);
         return;
       }
@@ -130,7 +130,11 @@ const LoginModal = ({ rerender }) => {
         }),
       });
       const data = await response.json();
-      toast.error(data.message);
+      toast.success(data.message);
+      if (data?.status === 200) {
+        handleEmail();
+      }
+      console.log({ data });
       setLoading(false);
       switchScreen();
     } catch (error) {
@@ -273,7 +277,7 @@ const LoginModal = ({ rerender }) => {
                 <div className='form-group'>
                   <input
                     placeholder='Phone Number'
-                    type='number'
+                    type='string'
                     id='phone'
                     value={formData.number}
                     onChange={(e) => handleChange(e.target.value, 'number')}

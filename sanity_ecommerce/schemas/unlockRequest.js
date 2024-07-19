@@ -14,6 +14,11 @@ export default {
       type: 'string',
     },
     {
+      name: 'imei',
+      title: 'imei',
+      type: 'string',
+    },
+    {
       name: 'sn',
       title: 'sn',
       type: 'string',

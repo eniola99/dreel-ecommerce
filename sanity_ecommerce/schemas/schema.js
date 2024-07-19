@@ -8,6 +8,7 @@ import account from './account';
 import announcement from './announcement';
 import imeiCategories from './imeiCategories';
 import unlockRequest from './unlockRequest';
+import loginMarketplace from './loginMarketplace';
 
 export default createSchema({
   name: 'default',
@@ -19,5 +20,6 @@ export default createSchema({
     announcement,
     imeiCategories,
     unlockRequest,
+    loginMarketplace,
   ]),
 });

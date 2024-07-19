@@ -1,26 +1,28 @@
 import React from 'react';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 
 import Navbar from './Navbar';
 import Footer from './Footer';
 
 const Layout = ({ children }) => {
+  const router = useRouter();
   return (
-    <div className="layout">
+    <div className='layout'>
       <Head>
-        <title>JS Mastery Store</title>
+        <title>Dreel Marketplace</title>
       </Head>
       <header>
-        <Navbar />
+        {!['/login', '/register', '/verify', '/verify/resend'].includes(
+          router.pathname
+        ) && <Navbar />}
       </header>
-      <main className="main-container">
-        {children}
-      </main>
+      <main className='main-container'>{children}</main>
       <footer>
-        <Footer />
+        {!['/login', '/register'].includes(router.pathname) && <Footer />}
       </footer>
     </div>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;

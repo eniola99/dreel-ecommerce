@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { IoIosSearch } from 'react-icons/io';
 import { IoMdArrowRoundBack } from 'react-icons/io';
 import toast from 'react-hot-toast';
@@ -7,7 +8,9 @@ import Link from 'next/link';
 import { client } from '../../lib/client';
 
 const index = ({ categories }) => {
+  const router = useRouter();
   const [userAccount, setUserAccount] = useState();
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const storedUser = sessionStorage.getItem('currentUser');
@@ -21,6 +24,11 @@ const index = ({ categories }) => {
       return toast.error('You need to login to proceed');
     }
   };
+
+  const filteredCategories = categories.filter((item) =>
+    item.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <>
       <div className='products-heading'>
@@ -32,14 +40,27 @@ const index = ({ categories }) => {
       </div>
       <div className='service-container-top'>
         <div className='service-input'>
-          <input placeholder='Search' className='search-input' type='text' />
+          <input
+            placeholder='Search'
+            className='search-input'
+            type='text'
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
           <button className='search-icon'>
             <IoIosSearch size={30} />
           </button>
         </div>
         <button onClick={viewMessage} className='unlock-now-button'>
           {userAccount !== undefined ? (
-            <Link href={'/account'}>Unlock Now</Link>
+            <Link
+              href={{
+                pathname: '/account',
+                query: { id: userAccount.user._id },
+              }}
+            >
+              Unlock Now
+            </Link>
           ) : (
             'Unlock Now'
           )}
@@ -53,8 +74,8 @@ const index = ({ categories }) => {
               <th>DELIVERY TIME</th>
               <th>PRICE</th>
             </tr>
-            {categories &&
-              categories.map((item) => (
+            {filteredCategories &&
+              filteredCategories.map((item) => (
                 <>
                   <tr key={item._id}>
                     <td>{item.title}</td>

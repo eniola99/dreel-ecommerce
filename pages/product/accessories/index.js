@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 import { urlFor, client } from '../../../lib/client';
+import { truncate } from '../../../lib/utils';
 import { IoMdArrowRoundBack } from 'react-icons/io';
 
 const list = ({ accessoriesProducts }) => {
@@ -14,23 +15,25 @@ const list = ({ accessoriesProducts }) => {
         <p>Go Back</p>
       </div>
       <div className='product-list'>
-        {accessoriesProducts.map((product) => (
-          <Link
-            href={`/accessories/${product?.slug?.current}`}
-            key={product?._id}
-          >
-            <div className=''>
-              <img
-                src={urlFor(product?.image[0] && product?.image[0])}
-                width={270}
-                height={250}
-                className='product-image'
-              />
-              <p className='product-name'>{product?.name}</p>
-              <p className='product-price'>${product?.price}.99</p>
-            </div>
-          </Link>
-        ))}
+        {accessoriesProducts
+          .map((product) => (
+            <Link
+              href={`/accessories/${product?.slug?.current}`}
+              key={product?._id}
+            >
+              <div className=''>
+                <img
+                  src={urlFor(product?.image[0] && product?.image[0])}
+                  width={270}
+                  height={250}
+                  className='product-image'
+                />
+                <p className='product-name'>{truncate(product?.name)}</p>
+                <p className='product-price'>${product?.price}.99</p>
+              </div>
+            </Link>
+          ))
+          .reverse()}
       </div>
     </>
   );

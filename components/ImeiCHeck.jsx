@@ -6,9 +6,43 @@ import getStripe from '../lib/getStripe';
 const ImeiCHeck = ({ categories }) => {
   const variables = {
     type: '',
+    imei: '',
     sn: '',
     notes: '',
   };
+
+  const transactions = [
+    {
+      title: 'iPhone 15 pro',
+      status: 'completed',
+      date: '16-07-24',
+    },
+    {
+      title: 'iPhone 15 pro',
+      status: 'completed',
+      date: '16-07-24',
+    },
+    {
+      title: 'iPhone 15 pro',
+      status: 'completed',
+      date: '16-07-24',
+    },
+    {
+      title: 'iPhone 15 pro',
+      status: 'completed',
+      date: '16-07-24',
+    },
+    {
+      title: 'iPhone 15 pro',
+      status: 'completed',
+      date: '16-07-24',
+    },
+    {
+      title: 'iPhone 15 pro',
+      status: 'completed',
+      date: '16-07-24',
+    },
+  ];
 
   const [formData, setFormData] = useState(variables);
   const [error, setError] = useState('');
@@ -38,8 +72,14 @@ const ImeiCHeck = ({ categories }) => {
     setLoading(true);
     setError('');
 
-    if (formData.sn.length === 0 || formData.type.length === 0)
-      return setError('serial number and service field is required');
+    if (
+      formData.sn.length === 0 ||
+      formData.type.length === 0 ||
+      formData.imei.length === 0
+    )
+      return setError(
+        'serial number, service type and imei fields is required'
+      );
 
     const stripe = await getStripe();
     const { type, sn, notes } = formData;
@@ -89,6 +129,15 @@ const ImeiCHeck = ({ categories }) => {
           </div>
           <div className='form-group'>
             <input
+              placeholder='IMEI'
+              type='text'
+              id='imei'
+              value={formData.imei}
+              onChange={(e) => handleChange(e.target.value, 'imei')}
+            />
+          </div>
+          <div className='form-group'>
+            <input
               placeholder='SN'
               type='text'
               id='sn'
@@ -111,39 +160,25 @@ const ImeiCHeck = ({ categories }) => {
           </button>
         </form>
 
-        <form className='imei-form' onSubmit={handleSubmit}>
-          <p>IMEI CHECK</p>
-          <div className='form-group'>
-            <select name='service' id='service' placeholder='Choose a Service'>
-              <option value='volvo'>hauwei unlock</option>
-              <option value='saab'>Samsung unlock</option>
-              <option value='mercedes'>iPhone unlock</option>
-              <option value='audi'>other</option>
-            </select>
-          </div>
-          <div className='form-group'>
-            <input
-              placeholder='SN'
-              type='text'
-              id='sn'
-              value={variables.sn}
-              onChange={(e) => handleChange(e.target.value, 'sn')}
-            />
-          </div>
-          <div className='form-group'>
-            <input
-              placeholder='Additional Notes'
-              type='text'
-              id='notes'
-              value={variables.notes}
-              onChange={(e) => handleChange(e.target.value, 'notes')}
-            />
-            {/* {error.length !== 0 && <p className='login-error'>{error}</p>} */}
-          </div>
-          <button type='submit' className='login-button'>
-            {/* {loading ? <Spinner /> : 'Login'} */}Submit
-          </button>
-        </form>
+        <div className='transaction-info'>
+          <p>Transaction Details</p>
+          {transactions ? (
+            transactions.map((item) => (
+              <div className='announcement-item' key={item._id}>
+                <div className='transaction-name'>
+                  <p>{item.title}</p>
+                  <span>{item.status}</span>
+                </div>
+                <span>{item.date}</span>
+                <hr />
+              </div>
+            ))
+          ) : (
+            <div className='announcement-spinner'>
+              <Spinner />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
