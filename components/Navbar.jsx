@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { AiOutlineShopping } from 'react-icons/ai';
 import { MdOutlineAccountCircle } from 'react-icons/md';
+import { MdKeyboardArrowDown } from 'react-icons/md';
 
 import { Cart } from './';
 import { useStateContext } from '../context/StateContext';
@@ -36,9 +37,6 @@ const Navbar = () => {
       setIsLoggedIn(true);
     }
   }, [isLoggedin]);
-  const rerender = () => {
-    setIsLoggedIn(true);
-  };
 
   return (
     <>
@@ -58,19 +56,15 @@ const Navbar = () => {
           <div className='navbar-account'>
             {!isLoggedin ? (
               <Link href='/login'>
-                <div className='account'>
-                  <MdOutlineAccountCircle size={22} />
-                  <span>Login/Register</span>
-                </div>
+                <MdOutlineAccountCircle size={22} />
               </Link>
             ) : (
               <div className='dropdown'>
                 <button onClick={handleToggle} className='dropdown-toggle'>
-                  {userAccount?.user?.username}
+                  {userAccount?.user?.username} <MdKeyboardArrowDown />
                 </button>
                 {open && (
                   <ul className='dropdown-menu'>
-                    <li>My Account</li>
                     <Link
                       href={{
                         pathname: '/account',

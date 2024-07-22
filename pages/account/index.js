@@ -8,6 +8,7 @@ import { client } from '../../lib/client';
 
 import ImeiCHeck from '../../components/ImeiCHeck';
 import Announcement from '../../components/Announcement';
+import Settings from '../../components/Settings';
 
 const index = ({
   announcement,
@@ -49,7 +50,12 @@ const index = ({
               )}
             </div>
           </div>
-          <ImeiCHeck categories={categories} />
+          <ImeiCHeck
+            categories={categories}
+            result={result}
+            cancelledResult={cancelledResult}
+            pendingResult={pendingResult}
+          />
           <div className='account-socials'>
             <div className='account-socials-card'>
               <button type='submit' className='socials-action'>
@@ -69,6 +75,8 @@ const index = ({
           <Announcement announcement={announcement} />
         </div>
       </div>
+      <hr />
+      <Settings />
     </>
   );
 };

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { Spinner } from 'reactstrap';
+import dateFormat from 'dateformat';
 import getStripe from '../lib/getStripe';
 
-const ImeiCHeck = ({ categories }) => {
+const ImeiCHeck = ({ categories, result, pendingResult, cancelledResult }) => {
   const variables = {
     type: '',
     imei: '',
@@ -11,43 +12,11 @@ const ImeiCHeck = ({ categories }) => {
     notes: '',
   };
 
-  const transactions = [
-    {
-      title: 'iPhone 15 pro',
-      status: 'completed',
-      date: '16-07-24',
-    },
-    {
-      title: 'iPhone 15 pro',
-      status: 'completed',
-      date: '16-07-24',
-    },
-    {
-      title: 'iPhone 15 pro',
-      status: 'completed',
-      date: '16-07-24',
-    },
-    {
-      title: 'iPhone 15 pro',
-      status: 'completed',
-      date: '16-07-24',
-    },
-    {
-      title: 'iPhone 15 pro',
-      status: 'completed',
-      date: '16-07-24',
-    },
-    {
-      title: 'iPhone 15 pro',
-      status: 'completed',
-      date: '16-07-24',
-    },
-  ];
-
   const [formData, setFormData] = useState(variables);
   const [error, setError] = useState('');
   const [userAccount, setUserAccount] = useState();
   const [loading, setLoading] = useState(false);
+  const [transactionDetails, setTransactionDetails] = useState();
 
   useEffect(() => {
     const storedUser = sessionStorage.getItem('currentUser');
@@ -56,11 +25,16 @@ const ImeiCHeck = ({ categories }) => {
     }
   }, []);
 
-  const onSuccess = (data) => {
-    setLoading(false);
-    toast.success(`${data.message}`);
-  };
-  // onSuccess(data);
+  useEffect(() => {
+    if (result || cancelledResult || pendingResult) {
+      const combinedArray = [
+        ...(result || []),
+        ...(cancelledResult || []),
+        ...(pendingResult || []),
+      ];
+      setTransactionDetails(combinedArray);
+    }
+  }, [result, cancelledResult, pendingResult]);
 
   const handleChange = (value, attr) => {
     const form = { ...formData };
@@ -82,14 +56,14 @@ const ImeiCHeck = ({ categories }) => {
       );
 
     const stripe = await getStripe();
-    const { type, sn, notes } = formData;
+    const { type, sn, notes, imei } = formData;
     const { user } = userAccount;
     const response = await fetch('/api/unlockRequest', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ type, sn, notes, user, categories }),
+      body: JSON.stringify({ type, sn, imei, notes, user, categories }),
     });
     if (response.statusCode === 500) return;
     const data = await response.json();
@@ -162,14 +136,22 @@ const ImeiCHeck = ({ categories }) => {
 
         <div className='transaction-info'>
           <p>Transaction Details</p>
-          {transactions ? (
-            transactions.map((item) => (
+          {transactionDetails ? (
+            transactionDetails.map((item) => (
               <div className='announcement-item' key={item._id}>
                 <div className='transaction-name'>
-                  <p>{item.title}</p>
-                  <span>{item.status}</span>
+                  <p>{item.type}</p>
+                  <span>
+                    {item.completed ? (
+                      'completed'
+                    ) : item.completed === false ? (
+                      <span className='transaction-cancel'>cancelled</span>
+                    ) : (
+                      <span className='transaction-pending'>pending</span>
+                    )}
+                  </span>
                 </div>
-                <span>{item.date}</span>
+                <span>{dateFormat(item._createdAt)}</span>
                 <hr />
               </div>
             ))

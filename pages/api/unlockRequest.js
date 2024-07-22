@@ -6,7 +6,7 @@ export default async (req, res) => {
   if (req.method !== 'POST') {
     return res.status(405).end();
   }
-  const { type, sn, notes, user, categories } = req.body;
+  const { type, sn, imei, notes, user, categories } = req.body;
   const { _id, currency } = user;
   const title = type.replace(/[^a-zA-Z0-9 ]/g, '');
 
@@ -34,7 +34,7 @@ export default async (req, res) => {
             quantity: 1,
           };
         }),
-      success_url: `${req.headers.origin}/payment-success?session_id={CHECKOUT_SESSION_ID}&type=${title}&sn=${sn}&notes=${notes}&userId=${_id}`,
+      success_url: `${req.headers.origin}/payment-success?session_id={CHECKOUT_SESSION_ID}&type=${title}&sn=${sn}&imei=${imei}&notes=${notes}&userId=${_id}`,
       cancel_url: `${req.headers.origin}/account`,
     };
 
