@@ -51,12 +51,12 @@ const Register = () => {
   const router = useRouter();
   const handleRegister = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setError('');
     if (formData.email.length === 0 || formData.password.length === 0) {
       setError('All register fields are required');
       return;
     }
+    setLoading(true);
     try {
       const {
         email,
@@ -102,8 +102,7 @@ const Register = () => {
   };
 
   const handleChange = (value, attr) => {
-    const form = { ...formData };
-    form[attr] = value;
+    const form = { ...formData, [attr]: value };
     setFormData(form);
   };
 
@@ -171,32 +170,19 @@ const Register = () => {
                 onChange={(e) => handleChange(e.target.value, 'address')}
               />
             </div>
-            <div className='form-group'>
+            <div className='select-container'>
               <select
                 name='currency'
                 id='currency'
                 onChange={(e) => handleChange(e.target.value, 'currency')}
               >
+                <option value=''>Select Currency</option>
                 {currencyData.map((item) => (
                   <option key={item.id} value={item.code}>
                     {item.name}
                   </option>
                 ))}
               </select>
-              {/* <select
-                name='currency'
-                id='currency'
-                onChange={(e) => handleChange(e.target.value, 'currency')}
-              >
-                <option value=''>Select a Currency</option>
-                {currencyData.map((item) => (
-                  <>
-                    <option key={item._id} value={item.code}>
-                      {item.name}
-                    </option>
-                  </>
-                ))}
-              </select> */}
             </div>
             <div className='form-group'>
               <div className='login-password'>

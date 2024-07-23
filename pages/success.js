@@ -8,6 +8,15 @@ import { runFireworks } from '../lib/utils';
 const Success = () => {
   const { setCartItems, setTotalPrice, setTotalQuantities } = useStateContext();
 
+  const [userAccount, setUserAccount] = useState();
+
+  useEffect(() => {
+    const storedUser = sessionStorage.getItem('currentUser');
+    if (storedUser) {
+      setUserAccount(JSON.parse(storedUser));
+      setCount(unlockCount + 1);
+    }
+  }, []);
   useEffect(() => {
     localStorage.clear();
     setCartItems([]);
@@ -30,7 +39,12 @@ const Success = () => {
             dreelmarketplace@gmail.com
           </a>
         </p>
-        <Link href='/'>
+        <Link
+          href={{
+            pathname: '/',
+            query: { id: userAccount?.user._id },
+          }}
+        >
           <button type='button' width='300px' className='btn'>
             Continue Shopping
           </button>

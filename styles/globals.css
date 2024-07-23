@@ -293,6 +293,12 @@ tr:nth-child(even) {
   color: #f02d34;
 }
 
+@media screen and (max-width: 768px) {
+  .login-form {
+    margin: 0px 30px;
+  }
+}
+
 .announcement-container {
   border: 0 solid #ccc;
   height: 70vh;
@@ -364,6 +370,25 @@ tr:nth-child(even) {
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+}
+
+.select-container {
+  display: inline-block;
+  position: relative;
+  /* width: 200px; */
+  width: 100%;
+  margin-bottom: 20px;
+  /* margin: 0px 20px; */
+}
+
+.select-container select {
+  display: inline-block;
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: white;
+  cursor: pointer;
 }
 
 .form-group select {
