@@ -75,10 +75,6 @@ tr:nth-child(even) {
   display: flex;
 }
 
-.account:hover {
-  transform: scale(1.1, 1.1);
-}
-
 .navbar-account {
   display: flex;
   transition: transform 0.4s ease;
@@ -415,16 +411,6 @@ tr:nth-child(even) {
   margin-top: 5px;
 }
 
-/* .imei-error {
-  color: #f02d34;
-  font-size: 200px;
-  margin-top: ;
-} */
-
-.login-button:hover {
-  transform: scale(1.1, 1.1);
-}
-
 /* */
 .dashboard-column {
   float: left;
@@ -458,9 +444,6 @@ tr:nth-child(even) {
   .column-two-card {
     margin-bottom: 20px;
   }
-  .column-two-card :hover {
-    transform: none;
-  }
 }
 
 .column-two {
@@ -468,10 +451,6 @@ tr:nth-child(even) {
   justify-content: space-between;
   padding: 0 10px;
   transition: transform 0.4s ease;
-}
-
-.column-two :hover {
-  transform: scale(1.1, 1.1);
 }
 
 .column-two-card {
@@ -673,13 +652,10 @@ span.text-red {
   color: gray;
   cursor: pointer;
   position: relative;
-  transition: transform 0.4s ease;
   border: none;
   background-color: transparent;
 }
-.cart-icon:hover {
-  transform: scale(1.1, 1.1);
-}
+
 .cart-item-qty {
   position: absolute;
   right: -8px;
@@ -702,13 +678,10 @@ span.text-red {
 }
 .product-card {
   cursor: pointer;
-  transform: scale(1, 1);
   transition: transform 0.5s ease;
   color: #324d67;
 }
-.product-card:hover {
-  transform: scale(1.1, 1.1);
-}
+
 .product-image {
   border-radius: 15px;
   background-color: #ebebeb;
@@ -1029,9 +1002,7 @@ span.text-red {
   transform: scale(1, 1);
   transition: transform 0.5s ease;
 }
-.btn:hover {
-  transform: scale(1.1, 1.1);
-}
+
 .product-detail-container {
   display: flex;
   gap: 40px;
@@ -1127,9 +1098,7 @@ span.text-red {
   transform: scale(1, 1);
   transition: transform 0.5s ease;
 }
-.buttons .add-to-cart:hover {
-  transform: scale(1.1, 1.1);
-}
+
 .buttons .buy-now {
   width: 200px;
 
@@ -1144,9 +1113,7 @@ span.text-red {
   transform: scale(1, 1);
   transition: transform 0.5s ease;
 }
-.buttons .buy-now:hover {
-  transform: scale(1.1, 1.1);
-}
+
 .quantity-desc {
   border: 1px solid gray;
   padding: 6px;

@@ -27,6 +27,7 @@
     "react-hot-toast": "^2.2.0",
     "react-icons": "^4.3.1",
     "react-modal": "^3.16.1",
+    "react-select": "^5.8.0",
     "reactstrap": "^9.2.2",
     "stripe": "^8.209.0"
   },

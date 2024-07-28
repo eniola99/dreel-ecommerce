@@ -13,9 +13,13 @@ export const StateContext = ({ children }) => {
 
   useEffect(() => {
     const storedUser = sessionStorage.getItem('currentUser');
+    // const cart = sessionStorage.getItem('cartItems');
     if (storedUser) {
       setCurrentUser(JSON.parse(storedUser));
     }
+    // if (cart) {
+    //   setCartItems(cart);
+    // }
   }, []);
 
   const login = (user) => {
@@ -26,6 +30,7 @@ export const StateContext = ({ children }) => {
   const logout = () => {
     setCurrentUser(null);
     sessionStorage.removeItem('currentUser');
+    sessionStorage.removeItem('cartItems');
   };
 
   let foundProduct;
@@ -55,10 +60,15 @@ export const StateContext = ({ children }) => {
       });
 
       setCartItems(updatedCartItems);
+      // sessionStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
     } else {
       product.quantity = quantity;
 
       setCartItems([...cartItems, { ...product }]);
+      // sessionStorage.setItem(
+      //   'cartItems',
+      //   JSON.stringify([...cartItems, { ...product }])
+      // );
     }
 
     toast.success(`${qty} ${product.name} added to the cart.`);
@@ -76,6 +86,7 @@ export const StateContext = ({ children }) => {
       (prevTotalQuantities) => prevTotalQuantities - foundProduct.quantity
     );
     setCartItems(newCartItems);
+    // sessionStorage.setItem('cartItems', JSON.stringify(newCartItems));
   };
 
   const toggleCartItemQuanitity = (id, value) => {
@@ -88,6 +99,14 @@ export const StateContext = ({ children }) => {
         ...newCartItems,
         { ...foundProduct, quantity: foundProduct.quantity + 1 },
       ]);
+      // sessionStorage.setItem(
+      //   'cartItems',
+      //   JSON.stringify([
+      //     ...newCartItems,
+      //     { ...foundProduct, quantity: foundProduct.quantity + 1 },
+      //   ])
+      // );
+
       setTotalPrice((prevTotalPrice) => prevTotalPrice + foundProduct.price);
       setTotalQuantities((prevTotalQuantities) => prevTotalQuantities + 1);
     } else if (value === 'dec') {
@@ -96,6 +115,14 @@ export const StateContext = ({ children }) => {
           ...newCartItems,
           { ...foundProduct, quantity: foundProduct.quantity - 1 },
         ]);
+        // sessionStorage.setItem(
+        //   'cartItems',
+        //   JSON.stringify([
+        //     ...newCartItems,
+        //     { ...foundProduct, quantity: foundProduct.quantity - 1 },
+        //   ])
+        // );
+
         setTotalPrice((prevTotalPrice) => prevTotalPrice - foundProduct.price);
         setTotalQuantities((prevTotalQuantities) => prevTotalQuantities - 1);
       }

@@ -1,19 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IoMdArrowRoundBack } from 'react-icons/io';
 import { useRouter } from 'next/router';
+import { toast } from 'react-hot-toast';
 
 const resend = () => {
   const router = useRouter();
   const [email, setEmail] = useState('');
+  const [userAccount, setUserAccount] = useState();
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    const storedUser = sessionStorage.getItem('currentUser');
+    if (storedUser) {
+      setUserAccount(JSON.parse(storedUser));
+    }
+  }, []);
+
+  useEffect(() => {
+    setEmail(userAccount?.user.email);
+  }, [userAccount]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ email });
+    const { _id } = userAccount.user;
+    const response = await fetch('/api/resend', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        _id,
+      }),
+    });
+    const data = await response.json();
+    if (data.status === 404) {
+      toast.error(data.message);
+      return;
+    } else {
+      toast.success(data.message);
+      return;
+    }
   };
 
-  const handleChange = (value, attr) => {
-    setEmail(value);
-  };
   return (
     <>
       <div className='verify-container'>
@@ -36,8 +64,7 @@ const resend = () => {
                   placeholder='email'
                   id='email'
                   value={email}
-                  onChange={(e) => handleChange(e.target.value)}
-                  required
+                  disabled
                 />
               </div>
               <button type='submit' className='login-button'>

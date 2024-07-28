@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
+import { Spinner } from 'reactstrap';
 
 const Settings = () => {
   const variables = {
@@ -9,8 +11,8 @@ const Settings = () => {
   };
   const [userAccount, setUserAccount] = useState();
   const [formData, setFormData] = useState(variables);
+  const [loading, setLoading] = useState(false);
 
-  // console.log({ userAccount, formData });
   useEffect(() => {
     const storedUser = sessionStorage.getItem('currentUser');
     if (storedUser) {
@@ -31,8 +33,29 @@ const Settings = () => {
     };
   }, [userAccount]);
 
-  const handleSubmit = () => {
-    console.log('line 21');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const response = await fetch('/api/update', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        formData,
+        userAccount,
+      }),
+    });
+    const data = await response.json();
+    if (data.status === 404) {
+      toast.error(data.message);
+      setLoading(false);
+      return;
+    } else {
+      toast.success(data.message);
+      setLoading(false);
+      return;
+    }
   };
 
   const handleChange = (value, attr) => {
@@ -78,22 +101,21 @@ const Settings = () => {
           </span>
         </div>
       </div>
-      <div className='verify-button'>
-        <Link href='/verify/resend'>
-          <button>Click here to verify</button>
-        </Link>
-      </div>
+      {!userAccount?.user.verified && (
+        <div className='verify-button'>
+          <Link href='/verify/resend'>
+            <button>Click here to verify</button>
+          </Link>
+        </div>
+      )}
       <div className='update-form'>
         <form className='imei-form' onSubmit={handleSubmit}>
           <p>Update Account</p>
-          <div className='form-group'>
-            <label className='auth__label' htmlFor='currency'>
-              Select Currency
-            </label>
+          <div className='select-container'>
             <select
               name='currency'
               id='currency'
-              onChange={(e) => handleChange(e.target.value, 'curency')}
+              onChange={(e) => handleChange(e.target.value, 'currency')}
             >
               <option value=''>{formData.currency}</option>
               {currencyData &&
@@ -132,7 +154,7 @@ const Settings = () => {
           </div>
 
           <button type='submit' className='login-button'>
-            Update
+            {loading ? <Spinner /> : 'Update'}
           </button>
         </form>
       </div>

@@ -137,24 +137,26 @@ const ImeiCHeck = ({ categories, result, pendingResult, cancelledResult }) => {
         <div className='transaction-info'>
           <p>Transaction Details</p>
           {transactionDetails ? (
-            transactionDetails.map((item) => (
-              <div className='announcement-item' key={item._id}>
-                <div className='transaction-name'>
-                  <p>{item.type}</p>
-                  <span>
-                    {item.completed ? (
-                      'completed'
-                    ) : item.completed === false ? (
-                      <span className='transaction-cancel'>cancelled</span>
-                    ) : (
-                      <span className='transaction-pending'>pending</span>
-                    )}
-                  </span>
+            transactionDetails
+              .map((item) => (
+                <div className='announcement-item' key={item._id}>
+                  <div className='transaction-name'>
+                    <p>{item.type}</p>
+                    <span>
+                      {item.completed ? (
+                        'completed'
+                      ) : item.completed === false ? (
+                        <span className='transaction-cancel'>cancelled</span>
+                      ) : (
+                        <span className='transaction-pending'>pending</span>
+                      )}
+                    </span>
+                  </div>
+                  <span>{dateFormat(item._createdAt)}</span>
+                  <hr />
                 </div>
-                <span>{dateFormat(item._createdAt)}</span>
-                <hr />
-              </div>
-            ))
+              ))
+              .reverse()
           ) : (
             <div className='announcement-spinner'>
               <Spinner />
